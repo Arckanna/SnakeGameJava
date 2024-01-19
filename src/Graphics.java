@@ -56,9 +56,9 @@ public class Graphics extends JPanel implements ActionListener {
     protected void start() {
         snakePosX = new int[BOARD_SIZE];
         snakePosY = new int[BOARD_SIZE];
-        isMoving = true;
         snakeLength = 5;
         direction ='R';
+        isMoving = true;
         timer.start();
     }
     @Override
@@ -66,14 +66,14 @@ public class Graphics extends JPanel implements ActionListener {
         super.paintComponent(g);
         if (isMoving){
             g.setColor(Color.BLACK);
-            for (int i=0;i< snakeLength;i++){
+            for (int i = 0; i < snakeLength; i++){
                 g.fillRect(snakePosX[i],snakePosY[i], TICK_SIZE,TICK_SIZE);
 
             }
         }
     }
     protected void move() {
-        for (int i = snakeLength; i> 0; i--){
+        for (int i = snakeLength; i > 0; i--){
             snakePosX[i] = snakePosX[i-1];
             snakePosY[i] = snakePosY[i-1];
         }
@@ -82,6 +82,23 @@ public class Graphics extends JPanel implements ActionListener {
             case 'D' -> snakePosY[0] += TICK_SIZE;
             case 'L' -> snakePosX[0] -= TICK_SIZE;
             case 'R' -> snakePosX[0] += TICK_SIZE;
+        }
+    }
+
+    protected void collisionTest() {
+        for (int i = snakeLength; i > 0; i--) {
+            if ((snakePosX[0] == snakePosX[i]) && (snakePosY[0] == snakePosY[i])) {
+                isMoving = false;
+                break;
+            }
+        }
+
+        if (snakePosX[0] < 0 || snakePosX[0] > WIDTH - TICK_SIZE || snakePosY[0] < 0 || snakePosY[0] > HEIGHT - TICK_SIZE) {
+            isMoving = false;
+        }
+
+        if (!isMoving) {
+            timer.stop();
         }
     }
     @Override
