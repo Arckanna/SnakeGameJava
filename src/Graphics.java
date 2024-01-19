@@ -48,6 +48,8 @@ public class Graphics extends JPanel implements ActionListener {
                             }
                             break;
                     }
+                }else{
+                    start();
                 }
             }
         });
@@ -106,5 +108,6 @@ public class Graphics extends JPanel implements ActionListener {
         if(isMoving){
             move();
         }
+        repaint();
     }
 }
