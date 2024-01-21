@@ -9,19 +9,23 @@ public class Graphics extends JPanel implements ActionListener {
     static final int WIDTH = 800;
     static final int HEIGHT = 800;
     static final int TICK_SIZE = 50;
-    static final int BOARD_SIZE =(WIDTH * HEIGHT) / (TICK_SIZE * TICK_SIZE);
+    static final int BOARD_SIZE = (WIDTH * HEIGHT) / (TICK_SIZE * TICK_SIZE);
 
-    final Font font= new Font("Arial", Font.BOLD, 40);
+    final Font font = new Font("Arial", Font.BOLD, 40);
     Color myYellow = new Color(230, 235, 197);
-    Color myGreen = new Color(6,65, 35);
+    Color myGreen = new Color(6, 65, 35);
     int[] snakePosX = new int[BOARD_SIZE];
     int[] snakePosY = new int[BOARD_SIZE];
     int snakeLength;
     Food food;
     final Timer timer = new Timer(150, this);
+    // Charger l'image de la pomme
+    ImageIcon appleIcon = new ImageIcon("image/pomme.png");
+    Image appleImage = appleIcon.getImage();
 
     char direction = 'R';
     boolean isMoving = false;
+
     public Graphics() {
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(myYellow);
@@ -29,71 +33,71 @@ public class Graphics extends JPanel implements ActionListener {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(isMoving){
-                    switch (e.getKeyCode()){
+                if (isMoving) {
+                    switch (e.getKeyCode()) {
                         case KeyEvent.VK_LEFT:
-                            if(direction != 'R') {
+                            if (direction != 'R') {
                                 direction = 'L';
                             }
                             break;
                         case KeyEvent.VK_RIGHT:
-                            if(direction != 'L') {
+                            if (direction != 'L') {
                                 direction = 'R';
                             }
                             break;
                         case KeyEvent.VK_UP:
-                            if(direction != 'D') {
+                            if (direction != 'D') {
                                 direction = 'U';
                             }
                             break;
                         case KeyEvent.VK_DOWN:
-                            if(direction != 'U') {
+                            if (direction != 'U') {
                                 direction = 'D';
                             }
                             break;
                     }
-                }else{
+                } else {
                     start();
                 }
             }
         });
         start();
     }
+
     protected void start() {
         snakePosX = new int[BOARD_SIZE];
         snakePosY = new int[BOARD_SIZE];
         snakeLength = 5;
-        direction ='R';
+        direction = 'R';
         isMoving = true;
         spawnFood();
         timer.start();
     }
+
     @Override
-    protected void paintComponent(java.awt.Graphics g)
-    {
+    protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
 
-        if (isMoving)
-        {   //draw food
-            g.setColor(Color.RED);
-            g.fillOval(food.getPosX(), food.getPosY(), TICK_SIZE, TICK_SIZE);
-            //draw snake
+        if (isMoving) {
+            // draw food
+            g.drawImage(appleImage, food.getPosX(), food.getPosY(), TICK_SIZE, TICK_SIZE, this);
+            // draw snake
             g.setColor(myGreen);
-            for (int i = 0; i < snakeLength; i++)
-            {
-                g.fillRect(snakePosX[i],snakePosY[i], TICK_SIZE,TICK_SIZE);
+            for (int i = 0; i < snakeLength; i++) {
+                g.fillRect(snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE);
 
             }
-        }else {
+        } else {
             String scoreText = "Game Over! Score: " + snakeLength;
             g.setFont(font);
             g.drawString(scoreText, (WIDTH - g.getFontMetrics().stringWidth(scoreText)) / 2, HEIGHT / 2);
         }
     }
+
     protected void move() {
-        for (int i = snakeLength; i > 0; i--){
-            snakePosX[i] = snakePosX[i-1];
-            snakePosY[i] = snakePosY[i-1];
+        for (int i = snakeLength; i > 0; i--) {
+            snakePosX[i] = snakePosX[i - 1];
+            snakePosY[i] = snakePosY[i - 1];
         }
         switch (direction) {
             case 'U' -> snakePosY[0] -= TICK_SIZE;
@@ -103,16 +107,18 @@ public class Graphics extends JPanel implements ActionListener {
         }
     }
 
-    protected void spawnFood(){
-        food =  new Food();
+    protected void spawnFood() {
+        food = new Food();
     }
-    protected void eatFood(){
-        if((snakePosX[0]==food.getPosX()) && (snakePosY[0]== food.getPosY())){
+
+    protected void eatFood() {
+        if ((snakePosX[0] == food.getPosX()) && (snakePosY[0] == food.getPosY())) {
             snakeLength++;
 
             spawnFood();
         }
     }
+
     protected void collisionTest() {
         for (int i = snakeLength; i > 0; i--) {
             if ((snakePosX[0] == snakePosX[i]) && (snakePosY[0] == snakePosY[i])) {
@@ -121,7 +127,8 @@ public class Graphics extends JPanel implements ActionListener {
             }
         }
 
-        if (snakePosX[0] < 0 || snakePosX[0] > WIDTH - TICK_SIZE || snakePosY[0] < 0 || snakePosY[0] > HEIGHT - TICK_SIZE) {
+        if (snakePosX[0] < 0 || snakePosX[0] > WIDTH - TICK_SIZE || snakePosY[0] < 0
+                || snakePosY[0] > HEIGHT - TICK_SIZE) {
             isMoving = false;
         }
 
@@ -133,7 +140,7 @@ public class Graphics extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(isMoving){
+        if (isMoving) {
             move();
             collisionTest();
             eatFood();
