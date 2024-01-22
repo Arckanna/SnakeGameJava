@@ -25,6 +25,9 @@ public class Graphics extends JPanel implements ActionListener {
     ImageIcon corpsSnake = new ImageIcon("image/corpsSnake.png");
     ImageIcon queueSnake = new ImageIcon("image/queueSnake.png");
     Image appleImage = appleIcon.getImage();
+    Image headSnakeImage = headSnake.getImage();
+    Image corpsSnakeImage = corpsSnake.getImage();
+    Image queueSnakeImage = queueSnake.getImage();
 
     char direction = 'R';
     boolean isMoving = false;
@@ -85,9 +88,15 @@ public class Graphics extends JPanel implements ActionListener {
             // draw food
             g.drawImage(appleImage, food.getPosX(), food.getPosY(), TICK_SIZE, TICK_SIZE, this);
             // draw snake
-            g.setColor(myGreen);
             for (int i = 0; i < snakeLength; i++) {
-                g.fillRect(snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE);
+                if (i == 0) {
+                    g.drawImage(headSnakeImage, snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE, this);
+                } else if (i == snakeLength - 1) {
+                    g.drawImage(queueSnakeImage, snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE, this);
+                } else {
+                    g.drawImage(corpsSnakeImage, snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE, this);
+                }
+                
 
             }
         } else {
