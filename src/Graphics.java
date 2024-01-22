@@ -21,6 +21,9 @@ public class Graphics extends JPanel implements ActionListener {
     final Timer timer = new Timer(150, this);
     // Charger l'image de la pomme
     ImageIcon appleIcon = new ImageIcon("image/pomme.png");
+    ImageIcon headSnake = new ImageIcon("image/headSnake.png");
+    ImageIcon corpsSnake = new ImageIcon("image/corpsSnake.png");
+    ImageIcon queueSnake = new ImageIcon("image/queueSnake.png");
     Image appleImage = appleIcon.getImage();
 
     char direction = 'R';
