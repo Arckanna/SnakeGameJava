@@ -13,7 +13,7 @@ public class Graphics extends JPanel implements ActionListener {
 
     final Font font = new Font("Arial", Font.BOLD, 40);
     Color myYellow = new Color(230, 235, 197);
-    
+
     int[] snakePosX = new int[BOARD_SIZE];
     int[] snakePosY = new int[BOARD_SIZE];
     int snakeLength;
